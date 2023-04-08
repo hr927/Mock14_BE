@@ -91,7 +91,7 @@ userRouter.patch("/deposit", authenticate, ledger, async (req, res) => {
     const user = await UserModel.find({ PanNo: from });
     if (user.length > 0) {
       const id = user[0]._id;
-      user[0].InitialBalance += amount;
+      user[0].InitialBalance += Number(amount);
       const payload = user[0];
       await UserModel.findByIdAndUpdate({ _id: id }, payload);
       res.send({ msg: "Amount Deposited" });
@@ -107,7 +107,7 @@ userRouter.patch("/withdraw", authenticate, ledger, async (req, res) => {
     const user = await UserModel.find({ PanNo: from });
     if (user.length > 0) {
       const id = user[0]._id;
-      user[0].InitialBalance -= amount;
+      user[0].InitialBalance -= Number(amount);
       const payload = user[0];
       await UserModel.findByIdAndUpdate({ _id: id }, payload);
       res.send({ msg: "Amount Withdrawn" });
@@ -126,8 +126,8 @@ userRouter.patch("/transfer", authenticate, ledger, async (req, res) => {
     if (user.length > 0 && user2.length > 0) {
       const id = user[0]._id;
       const toId = user2[0]._id;
-      user[0].InitialBalance -= amount;
-      user2[0].InitialBalance += amount;
+      user[0].InitialBalance -= Number(amount);
+      user2[0].InitialBalance += Number(amount);
       const payload2 = user2[0];
       const payload = user[0];
       await UserModel.findByIdAndUpdate({ _id: id }, payload);
