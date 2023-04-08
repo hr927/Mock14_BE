@@ -26,7 +26,7 @@ userRouter.post("/open", async (req, res) => {
       const user = await UserModel.find({ Email, PanNo });
       const token = jwt.sign({ userID: PanNo }, "masai");
       if (user.length > 0) {
-        res.send({ msg: "Login Successful", token: token });
+        res.send({ msg: "Login Successful", token: token, user: user[0] });
       } else {
         const newUser = new UserModel({
           Name,
@@ -39,7 +39,7 @@ userRouter.post("/open", async (req, res) => {
           PanNo,
         });
         await newUser.save();
-        res.send({ msg: "New User Registered", token: token });
+        res.send({ msg: "New User Registered", token: token, user: newUser });
       }
     }
   } catch (error) {
