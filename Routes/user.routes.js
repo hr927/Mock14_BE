@@ -63,7 +63,7 @@ userRouter.patch("/update", authenticate, async (req, res) => {
         PanNo,
       };
       await UserModel.findByIdAndUpdate({ _id: id }, payload);
-      res.send({ msg: "Details Updated" });
+      res.send({ msg: "Details Updated", user: payload });
     }
   } catch (error) {
     res.send({ msg: "Something went wrong", error: error.message });
