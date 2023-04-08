@@ -70,6 +70,20 @@ userRouter.patch("/update", authenticate, async (req, res) => {
   }
 });
 
+userRouter.delete("/close", authenticate, async (req, res) => {
+  const userID = req.body.userID;
+  try {
+    const user = await UserModel.find({ PanNo: userID });
+    if (user.length > 0) {
+      const id = user[0]._id;
+      await UserModel.findByIdAndDelete({ _id: id });
+      res.send({ msg: "Account Closed" });
+    }
+  } catch (error) {
+    res.send({ msg: "Something went wrong", error: error.message });
+  }
+});
+
 userRouter.patch("/deposit", authenticate, ledger, async (req, res) => {
   const { amount } = req.body;
   const from = req.body.userID;
